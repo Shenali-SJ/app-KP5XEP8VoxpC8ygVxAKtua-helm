@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: '{{.Values.dep-service .serviceName}}'
+  labels:
+    app: '{{.Values.dep-service .serviceName}}'
+spec:
+  replicas: '{{.Values.dep-service .avgReplicas}}'
+  selector:
+    matchLabels:
+      app: '{{.Values.dep-service .serviceName}}'
+  template:
+    metadata:
+      labels:
+        app: '{{.Values.dep-service .serviceName}}'
+    spec:
+      containers:
+      - name: '{{.Values.dep-service .serviceName}}'
+        image: '{{.Values.dep-service .dockerImage}}'
+        ports:
+        - containerPort: '{{.Values.dep-service .containerPort}}'
+        env:
+        - name: '{{.Values.dep-service .envs 0 .name}}'
+          valueFrom:
+            configMapKeyRef:
+              name: '{{.Values.dep-service .serviceName}}'
+              key: '{{.Values.dep-service .envs 0 .name}}'
+        - name: '{{.Values.dep-service .envs 1 .name}}'
+          valueFrom:
+            configMapKeyRef:
+              name: '{{.Values.dep-service .serviceName}}'
+              key: '{{.Values.dep-service .envs 1 .name}}'
+        - name: '{{.Values.dep-service .envs 2 .name}}'
+          valueFrom:
+            configMapKeyRef:
+              name: '{{.Values.dep-service .serviceName}}'
+              key: '{{.Values.dep-service .envs 2 .name}}'
+        - name: '{{.Values.dep-service .envs 3 .name}}'
+          valueFrom:
+            configMapKeyRef:
+              name: '{{.Values.dep-service .serviceName}}'
+              key: '{{.Values.dep-service .envs 3 .name}}'
+        - name: '{{.Values.dep-service .envs 4 .name}}'
+          valueFrom:
+            configMapKeyRef:
+              name: '{{.Values.dep-service .serviceName}}'
+              key: '{{.Values.dep-service .envs 4 .name}}'
